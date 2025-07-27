@@ -31,8 +31,28 @@ int main() {
 
         if (choice == 1) {
              cout << "\033[33mAdd Task (not implemented yet)\033[0m" << endl;
+             string addTask;
+             cout << "\033[38;5;208mEnter task description: \033[0m";
+             getline(cin, addTask);
+             if (!addTask.empty()) {
+                Task newTask;
+                newTask.description = addTask;
+                newTask.completed = false;
+                tasks.push_back(newTask);
+                cout << "\033[32mTask added: " << addTask << "\033[0m" << endl;
+             } else {
+                cout << "\033[31mTask description cannot be empty!\033[0m" << endl;
+             }
         } else if (choice == 2) {
             cout << "\033[33mView Tasks (not implemented yet)\033[0m" << endl;
+            for (size_t i = 0; i < tasks.size(); i++) {
+                cout << "\033[33m" << i + 1 << ". " << tasks[i].description << "\033[0m";
+                if (tasks[i].completed == 0) {
+                    cout << " \033[31m[Not completed]\033[0m" << endl;
+                } else if (tasks[i].completed) {
+                    cout << " \033[31m[Completed]\033[0m" << endl;
+                }
+            }
         } else if (choice == 3) {
             cout << "\033[33mMark Task as Completed (not implemented yet)\033[0m" << endl;
         } else if (choice == 4) {
@@ -42,6 +62,5 @@ int main() {
             cout << "\033[31mInvalid choice! Enter 1-4.\033[0m" << endl;
         }
     }
-
     return 0;
 }
