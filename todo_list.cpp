@@ -8,6 +8,15 @@ struct Task {
     bool completed;
 };
 
+void completeTask(vector<Task>& tasks) {
+    if (tasks.empty()) {
+        cout << "\033[33mNo tasks to complete!\033[0m" << endl;
+        return;
+    }
+     viewTasks(tasks);
+    
+}
+
 int main() {
     vector<Task> tasks;
 
@@ -49,12 +58,36 @@ int main() {
                 cout << "\033[33m" << i + 1 << ". " << tasks[i].description << "\033[0m";
                 if (tasks[i].completed == 0) {
                     cout << " \033[31m[Not completed]\033[0m" << endl;
-                } else if (tasks[i].completed) {
+                } else if (tasks[i].completed == 1) {
                     cout << " \033[31m[Completed]\033[0m" << endl;
                 }
             }
         } else if (choice == 3) {
-            cout << "\033[33mMark Task as Completed (not implemented yet)\033[0m" << endl;
+            int completed_task_num;
+            for (size_t i = 0; i < tasks.size(); i++) {
+                cout << "\033[33m" << i + 1 << ". " << tasks[i].description << "\033[0m";
+                if (tasks[i].completed == 0) {
+                    cout << " \033[31m[Not completed]\033[0m" << endl;
+                } else if (tasks[i].completed == 1) {
+                    cout << " \033[31m[Completed]\033[0m" << endl;
+                }
+            }
+            cout << "Enter number of task to complete: ";
+            cin >> completed_task_num;
+            if (completed_task_num - 1 < tasks.size()) {
+                for (size_t j = 0; j < tasks.size(); j++) {
+                    if (j == completed_task_num) {
+                        tasks[j].completed = true;
+                        cout << "\033[33m" << j + 1 << ". " << tasks[j].description << "\033[0m";
+                        cout << " \033[31m[Completed]\033[0m" << endl; 
+                        break;
+                    }
+                }
+            } else {
+                cout << "Error";
+                break;
+            }
+            
         } else if (choice == 4) {
             cout << "\033[35mThanks for using To-Do List Manager!\033[0m" << endl;
             break;
