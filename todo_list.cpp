@@ -26,7 +26,27 @@ void viewTasks(const vector<Task>& tasks) {
 }
 
 void deleteTask(vector<Task>& tasks) {
-    
+    if (tasks.empty()) {
+        cout << "\033[33mNo tasks to delete!\033[0m" << endl;
+        return;
+    }
+    viewTasks(tasks);
+
+    cout << "\033[38;5;208mEnter number of task to delete: \033[0m";
+    int taskNumber;
+    if (!(cin >> taskNumber)) {
+        cout << "\033[31mInvalid input! Enter a number.\033[0m" << endl;
+        cin.clear();
+        cin.ignore(10000, '\n');
+        return;
+    }
+    cin.ignore(10000, '\n');
+    if (taskNumber >= 1 && taskNumber <= static_cast<int>(tasks.size())) {
+        tasks.erase(tasks.begin() + (taskNumber - 1));
+        cout << "\033[32mTask " << taskNumber << " deleted!\033[0m" << endl;
+    } else {
+        cout << "\033[31mInvalid task number!\033[0m" << endl;
+    }
 }
 
 void completeTask(vector<Task>& tasks) {
@@ -94,7 +114,7 @@ int main() {
         } else if (choice == 3) {
             completeTask(tasks);
         } else if (choice == 4) {
-            
+            deleteTask(tasks);
         } else if (choice == 5) {
             cout << "\033[35mThanks for using To-Do List Manager!\033[0m" << endl;
             break;
