@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 using namespace std;
@@ -74,6 +75,21 @@ void completeTask(vector<Task>& tasks) {
      }
 }
 
+void saveTasks(const vector<Task>& tasks) {
+    ofstream outFile("tasks.txt");
+    if (!outFile.is_open()) {
+        cout << "\033[31mError saving tasks to file!\033[0m" << endl;
+        return;
+    }
+
+    for (size_t i = 0; i < tasks.size(); i++) {
+        outFile << tasks[i].description << " - " << tasks[i].completed << "\n";
+    }
+
+    outFile.close();
+    cout << "\033[32mTasks saved to file!\033[0m" << endl;
+}
+
 int main() {
     vector<Task> tasks;
 
@@ -84,7 +100,8 @@ int main() {
         cout << "2. View Tasks" << endl;
         cout << "3. Mark Task as Completed" << endl;
         cout << "4. Delete Task" << endl;
-        cout << "5. Exit" << endl;
+        cout << "5. Save tasks to file" << endl;
+        cout << "6. Exit" << endl;
         cout << "\033[38;5;208mEnter your choice (1-4): \033[0m";
         int choice;
 
@@ -116,6 +133,8 @@ int main() {
         } else if (choice == 4) {
             deleteTask(tasks);
         } else if (choice == 5) {
+            saveTasks(tasks);
+        } else if (choice == 6) {
             cout << "\033[35mThanks for using To-Do List Manager!\033[0m" << endl;
             break;
         } else {
