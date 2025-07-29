@@ -25,6 +25,10 @@ void viewTasks(const vector<Task>& tasks) {
     }
 }
 
+void deleteTask(vector<Task>& tasks) {
+    
+}
+
 void completeTask(vector<Task>& tasks) {
     if (tasks.empty()) {
         cout << "\033[33mNo tasks to complete!\033[0m" << endl;
@@ -59,7 +63,8 @@ int main() {
         cout << "1. Add Task" << endl;
         cout << "2. View Tasks" << endl;
         cout << "3. Mark Task as Completed" << endl;
-        cout << "4. Exit" << endl;
+        cout << "4. Delete Task" << endl;
+        cout << "5. Exit" << endl;
         cout << "\033[38;5;208mEnter your choice (1-4): \033[0m";
         int choice;
 
@@ -88,8 +93,9 @@ int main() {
             viewTasks(tasks);
         } else if (choice == 3) {
             completeTask(tasks);
-            
         } else if (choice == 4) {
+            
+        } else if (choice == 5) {
             cout << "\033[35mThanks for using To-Do List Manager!\033[0m" << endl;
             break;
         } else {
