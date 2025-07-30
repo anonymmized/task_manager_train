@@ -71,7 +71,7 @@ void completeTask(vector<Task>& tasks) {
         tasks[taskNumber - 1].completed = true;
         cout << "\033[32mTask " << taskNumber << " marked as completed!\033[0m" << endl;
      } else {
-        cout << "\033[32mTask " << taskNumber << " marked as completed!\033[0m" << endl;
+        cout << "\033[31mInvalid task number!\033[0m" << endl;
      }
 }
 
@@ -90,6 +90,34 @@ void saveTasks(const vector<Task>& tasks) {
     cout << "\033[32mTasks saved to file!\033[0m" << endl;
 }
 
+void editTask(vector <Task>& tasks) {
+    if (tasks.empty()) {
+        cout << "\033[33mNo tasks to complete!\033[0m" << endl;
+        return;
+    }
+
+    viewTasks(tasks);
+
+    cout << "\033[38;5;208mEnter number of task to complete: \033[0m";
+    int taskNumber;
+    if (!(cin >> taskNumber)) {
+        cout << "\033[31mInvalid input! Enter a number.\033[0m" << endl;
+        cin.clear();
+        cin.ignore(10000, '\n');
+        return;
+    }
+    cin.ignore(10000, '\n');
+    if (taskNumber >= 1 && taskNumber <= static_cast<int>(tasks.size())) {
+        string editTask;
+        cout << "\033[38;5;208mEnter new description to task: \033[0m";
+        cin >> editTask;
+        tasks[taskNumber - 1].description = editTask;  
+        cout << "\033[32mTask " << taskNumber << " was edited!\033[0m" << endl;
+    } else {
+        cout << "\033[31mInvalid task number!\033[0m" << endl;
+    }
+}
+
 int main() {
     vector<Task> tasks;
 
@@ -100,9 +128,10 @@ int main() {
         cout << "2. View Tasks" << endl;
         cout << "3. Mark Task as Completed" << endl;
         cout << "4. Delete Task" << endl;
-        cout << "5. Save tasks to file" << endl;
-        cout << "6. Exit" << endl;
-        cout << "\033[38;5;208mEnter your choice (1-4): \033[0m";
+        cout << "5. Edit Task" << endl;
+        cout << "6. Save tasks to file" << endl;
+        cout << "7. Exit" << endl;
+        cout << "\033[38;5;208mEnter your choice (1-7): \033[0m";
         int choice;
 
         if (!(cin >> choice)) {
@@ -133,12 +162,14 @@ int main() {
         } else if (choice == 4) {
             deleteTask(tasks);
         } else if (choice == 5) {
-            saveTasks(tasks);
+            editTask(tasks);
         } else if (choice == 6) {
+            saveTasks(tasks);
+        } else if (choice == 7) {
             cout << "\033[35mThanks for using To-Do List Manager!\033[0m" << endl;
             break;
         } else {
-            cout << "\033[31mInvalid choice! Enter 1-4.\033[0m" << endl;
+            cout << "\033[31mInvalid choice! Enter 1-7.\033[0m" << endl;
         }
     }
     return 0;
