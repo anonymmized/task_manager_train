@@ -147,6 +147,9 @@ void editTask(vector<Task>& tasks) {
 }
 
 int main() {
+    cout << "╔═══════════════════════════════╗\n";
+    cout << "║     \033[1;33mTO-DO LIST MANAGER (C++)\033[1;36m  ║\n";
+    cout << "╚═══════════════════════════════╝\n";
     vector<Task> tasks;
     cout << "\033[35mWelcome to To-Do List Manager!\033[0m" << endl;
     loadTasks(tasks);
