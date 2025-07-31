@@ -8,6 +8,7 @@ using namespace std;
 struct Task {
     string description;
     bool completed;
+    string category;
 };
 
 void viewTasks(const vector<Task>& tasks) {
@@ -17,7 +18,7 @@ void viewTasks(const vector<Task>& tasks) {
     }
     cout << "\033[36m--- Task List ---\033[0m" << endl;
     for (size_t i = 0; i < tasks.size(); i++) {
-        cout << i + 1 << ". " << tasks[i].description;
+        cout << i + 1 << ". [" << tasks[i].category << "] " << tasks[i].description;
         if (tasks[i].completed) {
             cout << " \033[32m[Completed]\033[0m" << endl;
         } else {
@@ -79,7 +80,7 @@ void saveTasks(const vector<Task>& tasks) {
         return;
     }
     for (size_t i = 0; i < tasks.size(); i++) {
-        outFile << tasks[i].description << "," << tasks[i].completed << "\n";
+        outFile << tasks[i].description << "," << tasks[i].completed << "," << tasks[i].category << "\n";
     }
     outFile.close();
     cout << "\033[32mTasks saved to file!\033[0m" << endl;
@@ -91,16 +92,21 @@ void loadTasks(vector<Task>& tasks) {
         cout << "\033[33mNo tasks found or error loading file!\033[0m" << endl;
         return;
     }
-    string line, description;
+    string line;
     while (getline(inFile, line)) {
         stringstream ss(line);
+        string completedStr, description, category;
+
         getline(ss, description, ',');
+        getline(ss, completedStr, ',');
+        getline(ss, category);
         int completed;
         ss >> completed;
         if (!description.empty()) {
             Task task;
             task.description = description;
-            task.completed = static_cast<bool>(completed);
+            task.completed = (completedStr == "1");
+            task.category = category.empty() ? "General" : category;
             tasks.push_back(task);
         }
     }
@@ -163,18 +169,27 @@ int main() {
         }
         cin.ignore(10000, '\n');
         if (choice == 1) {
-            string addTask;
+            string addTask, taskCategory;
             cout << "\033[38;5;208mEnter task description: \033[0m";
             getline(cin, addTask);
-            if (!addTask.empty()) {
-                Task newTask;
-                newTask.description = addTask;
-                newTask.completed = false;
-                tasks.push_back(newTask);
-                cout << "\033[32mTask added: " << addTask << "\033[0m" << endl;
-            } else {
+            if (addTask.empty()) {
                 cout << "\033[31mTask description cannot be empty!\033[0m" << endl;
+                continue;
             }
+
+            cout << "\033[38;5;208mEnter task category (e.g., Work, Home): \033[0m";
+            getline(cin, taskCategory);
+            if (taskCategory.empty()) {
+                taskCategory = "General";
+            }
+
+            Task newTask;
+            newTask.description = addTask;
+            newTask.completed = false;
+            newTask.category = taskCategory;
+            tasks.push_back(newTask);
+            cout << "\033[32mTask added: " << addTask << " [Category: " << taskCategory << "]\033[0m" << endl;
+            
         } else if (choice == 2) {
             viewTasks(tasks);
         } else if (choice == 3) {
